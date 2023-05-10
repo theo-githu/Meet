@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/github.io/meet/static/css/main.073c9b0a.css",
-    "main.js": "/github.io/meet/static/js/main.9d1f17c7.js",
-    "static/js/787.4b564826.chunk.js": "/github.io/meet/static/js/787.4b564826.chunk.js",
-    "service-worker.js": "/github.io/meet/service-worker.js",
-    "static/media/logo.svg": "/github.io/meet/static/media/logo.103b5fa18196d5665a7e12318285c916.svg",
-    "index.html": "/github.io/meet/index.html",
-    "main.073c9b0a.css.map": "/github.io/meet/static/css/main.073c9b0a.css.map",
-    "main.9d1f17c7.js.map": "/github.io/meet/static/js/main.9d1f17c7.js.map",
-    "787.4b564826.chunk.js.map": "/github.io/meet/static/js/787.4b564826.chunk.js.map"
+    "main.css": "/meet/static/css/main.073c9b0a.css",
+    "main.js": "/meet/static/js/main.1173e3cc.js",
+    "static/js/787.4b564826.chunk.js": "/meet/static/js/787.4b564826.chunk.js",
+    "service-worker.js": "/meet/service-worker.js",
+    "static/media/logo.svg": "/meet/static/media/logo.103b5fa18196d5665a7e12318285c916.svg",
+    "index.html": "/meet/index.html",
+    "main.073c9b0a.css.map": "/meet/static/css/main.073c9b0a.css.map",
+    "main.1173e3cc.js.map": "/meet/static/js/main.1173e3cc.js.map",
+    "787.4b564826.chunk.js.map": "/meet/static/js/787.4b564826.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.9d1f17c7.js"
+    "static/js/main.1173e3cc.js"
   ]
 }
