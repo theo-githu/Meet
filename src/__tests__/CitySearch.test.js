@@ -5,11 +5,13 @@ import CitySearch from '../CitySearch';
 import { mockData } from '../mock-data';
 import { extractLocations } from '../api';
 
-describe('CitySearch /> component', () => {
+describe('<CitySearch /> component', () => {
     let locations, CitySearchWrapper;
     beforeAll(() => {
-        locations = extractLocations(mockData);
-        CitySearchWrapper = shallow(<CitySearch locations={locations}/>);
+      locations = extractLocations(mockData);
+      CitySearchWrapper = shallow(<CitySearch 
+        locations={locations}
+        updateEvents={() => {}} />);
     });
     
     test('render text input', () => {
