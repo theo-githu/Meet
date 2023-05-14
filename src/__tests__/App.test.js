@@ -6,6 +6,7 @@ import EventList from '../EventList';
 import CitySearch from '../CitySearch';
 import { mockData } from '../mock-data';
 import { extractLocations, getEvents } from '../api';
+import NumberOfEvents from '../NumberOfEvents';
 
 describe('<App /> component', () => {
     let AppWrapper;
@@ -19,6 +20,10 @@ describe('<App /> component', () => {
 
     test('render CitySearch', () => {
         expect(AppWrapper.find(CitySearch)).toHaveLength(1);
+    });
+
+    test('render NumberOfEvents', () => {
+        expect(AppWrapper.find(NumberOfEvents)).toHaveLength(1);
     });
 });
 
@@ -63,4 +68,26 @@ describe('<App /> integration', () => {
         expect(AppWrapper.state('events')).toEqual(allEvents);
         AppWrapper.unmount();
     });
+
+    // integration testing for NumberOfEvents
+
+    test('App passes "numberOfEVents" state as a prop to NumberOfEvents', () => {
+        const AppWrapper = mount(<App />);
+        const AppEventCountState = AppWrapper.state('numberOfEvents');
+        expect(AppEventCountState).not.toEqual(undefined);
+        AppWrapper.setState({ numberOfEvents: 10 });
+        expect(AppWrapper.find(NumberOfEvents).props().numberOfEvents).toBe(AppWrapper.state('numberOfEvents'));
+        AppWrapper.unmount();
+    });
+
+    test('Filtered list of events matches mock data', async () => {
+        const AppWrapper = mount(<App />);
+        const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
+        NumberOfEventsWrapper.find('.number').simulate('change', {target: { value: 20 },});
+        await getEvents();
+        expect(AppWrapper.state('events')).toEqual(mockData.slice(0, 20));
+        AppWrapper.unmount();
+    });    
+
+
 });
