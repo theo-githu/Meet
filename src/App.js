@@ -14,12 +14,28 @@ class App extends Component {
     numberOfEvents: 32
   }
 
+  async componentDidMount() {
+    this.mounted = true;
+    // so I can view changes on localhost 
+    if (window.location.href.startsWith("http://localhost")) {
+      getEvents().then((events) => {
+        if (this.mounted) {
+          this.setState({ events, locations: extractLocations(events)});
+        }
+      });
+    }
 
-  componentDidMount() {
-    getEvents().then((events) => {
+  getEvents().then((events) => {
+    if (this.mounted) {
       this.setState({ events, locations: extractLocations(events) });
-    });
-  }
+    }
+  });
+}
+  // componentDidMount() {
+  //   getEvents().then((events) => {
+  //     this.setState({ events, locations: extractLocations(events) });
+  //   });
+  // }
 
   componentWillUnmount(){
     this.mounted = false;
