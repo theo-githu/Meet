@@ -14,7 +14,7 @@ class NumberOfEvents extends Component {
         let inputValue = event.target.value;
         inputValue = Math.max(Number(minValue), Math.min(Number(maxValue), Number(inputValue)));
         this.props.updateEvents(null, inputValue);
-        this.setState({ numver: inputValue });
+        this.setState({ number: inputValue });
         if (inputValue <1 || inputValue > 32) {
             this.setState({errorText: 'select number from 1 to 32'});
         } else {
@@ -27,6 +27,7 @@ class NumberOfEvents extends Component {
             <div className='NumberOfEvents'>
                 <h3>Number of Events:</h3>
                 <input 
+                    id='number-of-events'
                     type='number'
                     className='number'
                     value={this.state.number}
