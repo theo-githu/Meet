@@ -8,7 +8,7 @@ import { extractLocations } from "../api";
 
 const feature = loadFeature('./src/features/filterEventsByCity.feature'); //file path must start from the root of the project (src)
 
-// code for the Gherkin file in loadFeature
+
 defineFeature(feature, test => {
     test('When user hasn’t searched for a city, show upcoming events from all cities.', ({ given, when, then }) => {
         let AppWrapper;

@@ -35,9 +35,9 @@ defineFeature(feature, test => {
         when('the user has selected a number of events', () => {
             AppWrapper.update();
             let NumberOfEventsWrapper = AppWrapper.find('NumberOfEvents');
-            const eventNumber = { target: { value: 32 } };
+            const eventNumber = { target: { value: 22 } };
             NumberOfEventsWrapper.find('.number').simulate('change', eventNumber);
-            expect(NumberOfEventsWrapper.state('number')).toBe(32);
+            expect(NumberOfEventsWrapper.state('number')).toBe(22);
 
         });
 
