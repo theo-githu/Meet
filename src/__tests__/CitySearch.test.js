@@ -76,7 +76,7 @@ describe('<CitySearch /> component', () => {
             showSuggestions: undefined
         });
         CitySearchWrapper.find('.suggestions li').at(0).simulate('click');
-        expecte(CitySearchWrapper.state('showSuggestions')).toBe(false);
+        expect(CitySearchWrapper.state('showSuggestions')).toBe(false);
         expect(CitySearchWrapper.find('.suggestions').prop('style')).toEqual({ display: 'none' });
     });
     
