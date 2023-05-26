@@ -11,7 +11,6 @@ class Alert extends Component {
     return {
       color: this.color,
       textAlign: 'center'
-     
     };
   }
 
@@ -25,25 +24,26 @@ class Alert extends Component {
 }
 
 class InfoAlert extends Alert {
-    constructor(props) {
-      super(props);
-      this.color = 'blue';
+  constructor(props) {
+    super(props);
+    this.color = 'blue';
       
     }
 }
 
 class ErrorAlert extends Alert {
-    constructor(props) {
-        super(props);
-        this.color = 'red';
-    }
+  constructor(props) {
+    super(props);
+    this.color = 'red';
+  }
 }
 
-// class WarningAlert extends Alert { 
-//     constructor(props) {
-//         super(props);
-//         this.color = 'orange';
-//     }
-// }
+class OfflineAlert extends Alert { 
+  constructor(props) {
+    super(props);
+    this.color = 'red';
+    this.fontSize = '12px';
+  }
+}
 
-export { InfoAlert, ErrorAlert };
+export { InfoAlert, ErrorAlert, OfflineAlert };
