@@ -129,8 +129,9 @@ input[type="number"] {
 }
 
 .Alert {
-  position: fixed;
-  top: 20px;
+  position: relative;
+  top: 10px;
+  bottom: 10px;
 }
 
 .data-vis-wrapper {

@@ -6,6 +6,7 @@ import NumberOfEvents from './NumberOfEvents';
 import { extractLocations, getEvents } from './api';
 import './nprogress.css';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { WarningAlert } from './Alert';
 
 class App extends Component {
 
@@ -14,7 +15,7 @@ class App extends Component {
     locations: [],
     selectedLocation: 'all',
     numberOfEvents: 32,
-    
+    warningText: ''
   }
 
   async componentDidMount() {
@@ -37,6 +38,14 @@ class App extends Component {
 
   componentWillUnmount(){
     this.mounted = false;
+  }
+
+  prompOfflineWarning = () => {
+    if (!navigator.onLine) {
+      this.setState({ 
+        warningText: 'You are offline. Events may not be uptodate.'
+      })
+    }
   }
 
   // data from API recharts
@@ -91,6 +100,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Meet App</h1>
+          <WarningAlert text={this.state.warningText} />
         <h4>Choose your nearest city</h4>
         <CitySearch updateEvents={this.updateEvents} locations={locations} />
         <NumberOfEvents updateEvents={this.updateEvents} numberOfEvents={numberOfEvents} />       
