@@ -44,7 +44,7 @@ const removeQuery = () => {
 
 const getToken = async (code) => {
   const encodeCode = encodeURIComponent(code);
-  const { access_token } = await fetch (
+  const { access_token } = await fetch(
     'https://213tnlf66l.execute-api.eu-west-2.amazonaws.com/dev/api/token/' + encodeCode
   )
     .then((res) => {
