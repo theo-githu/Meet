@@ -5,7 +5,7 @@ import CitySearch from './CitySearch';
 import NumberOfEvents from './NumberOfEvents';
 import { extractLocations, getEvents } from './api';
 import './nprogress.css';
-// import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { WarningAlert } from './Alert';
 
 class App extends Component {
@@ -50,15 +50,15 @@ class App extends Component {
 
   // data from API recharts
   
-  // getData = () => {
-  //   const {locations, events} = this.state;
-  //   const data = locations.map((location)=>{
-  //     const number = events.filter((event) => event.location === location).length
-  //     const city = location.split(', ').shift()
-  //     return {city, number};
-  //   })
-  //   return data;
-  // };
+  getData = () => {
+    const {locations, events} = this.state;
+    const data = locations.map((location)=>{
+      const number = events.filter((event) => event.location === location).length
+      const city = location.split(', ').shift()
+      return {city, number};
+    })
+    return data;
+  };
 
   updateNumberOfEvents(number) {
     this.setState({
@@ -106,7 +106,7 @@ class App extends Component {
         <NumberOfEvents updateEvents={this.updateEvents} numberOfEvents={numberOfEvents} />       
         <h4>Events in each city</h4>
 
-        {/* <ResponsiveContainer height={400}>
+        <ResponsiveContainer height={400}>
           <ScatterChart
             margin={{
               top: 20, right: 20, bottom: 20, left: 20,
@@ -118,7 +118,7 @@ class App extends Component {
             <Tooltip cursor={{ strokeDasharray: '3 3' }} />
             <Scatter data={this.getData()} fill="#8884d8" />
           </ScatterChart>
-        </ResponsiveContainer> */}
+        </ResponsiveContainer>
 
         <EventList events={this.state.events} />
       </div>
