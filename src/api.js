@@ -2,20 +2,24 @@ import axios from 'axios';
 import NProgress from 'nprogress';
 import { mockData } from './mock-data';
 
-/**
- *
- * @param {*} events:
- * The following function should be in the “api.js” file.
- * This function takes an events array, then uses map to create a new array with only locations.
- * It will also remove all duplicates by creating another new array using the spread operator and spreading a Set.
- * The Set will remove all duplicates from the array.
- */
-
-
 export const extractLocations = (events) => {
   var extractLocations = events.map((event) => event.location);
   var locations = [...new Set(extractLocations)];
   return locations;
+};
+
+const removeQuery = () => {
+  if (window.history.pushState && window.location.pathname) {
+    var newurl =
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      window.location.pathname;
+    window.history.pushState("", "", newurl);
+  } else {
+    newurl = window.location.protocol + "//" + window.location.host;
+    window.history.pushState("", "", newurl);
+  }
 };
 
 export const checkToken = async (accessToken) => {
@@ -26,6 +30,25 @@ export const checkToken = async (accessToken) => {
     .catch((error) => error.json());
 
     return result;
+};
+
+const getToken = async (code) => {
+  try {
+    const encodeCode = encodeURIComponent(code);
+    const { access_token } = await fetch(
+      'https://213tnlf66l.execute-api.eu-west-2.amazonaws.com/dev/api/token/' + encodeCode
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .catch((error) => error);
+
+    access_token && localStorage.setItem('access_token', access_token);
+
+    return access_token;
+  } catch (error) {
+    error.json();
+  }
 };
 
 export const getEvents = async () => {
@@ -43,7 +66,6 @@ export const getEvents = async () => {
   }
 
   const token = await getAccessToken();
-
   if (token) {
     removeQuery();
     const url = 'https://213tnlf66l.execute-api.eu-west-2.amazonaws.com/dev/api/get-events/' + token;
@@ -60,7 +82,6 @@ export const getEvents = async () => {
 
 export const getAccessToken = async () => {
   const accessToken = localStorage.getItem('access_token');
-
   const tokenCheck = accessToken && (await checkToken(accessToken));
 
   if (!accessToken || tokenCheck.error) {
@@ -80,34 +101,7 @@ export const getAccessToken = async () => {
 };
 
 
-const removeQuery = () => {
-  if (window.history.pushState && window.location.pathname) {
-    var newurl =
-      window.location.protocol +
-      "//" +
-      window.location.host +
-      window.location.pathname;
-    window.history.pushState("", "", newurl);
-  } else {
-    newurl = window.location.protocol + "//" + window.location.host;
-    window.history.pushState("", "", newurl);
-  }
-};
 
-const getToken = async (code) => {
-  const encodeCode = encodeURIComponent(code);
-  const { access_token } = await fetch(
-    'https://213tnlf66l.execute-api.eu-west-2.amazonaws.com/dev/api/token/' + encodeCode
-  )
-    .then((res) => {
-      return res.json();
-    })
-    .catch((error) => error);
-
-  access_token && localStorage.setItem('access_token', access_token);
-
-  return access_token;
-};
 
 
 
