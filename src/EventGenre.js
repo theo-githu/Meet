@@ -4,36 +4,39 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recha
 const EventGenre = ({ events }) => {
     const [data, setData] = useState([]);
 
+    const colors = ['#2364aa', '#3da5d9', '#73bfb8', '#fec601', '#ea7317'];
+
+    useEffect(() => { 
+        setData(getData()); 
+    }, [events]);
+
     const getData = () => {
         const genres = ['React', 'JavaScript', 'Node', 'jQuery', 'AngularJS'];
-        const data = genres.map((genre) => {
-            const value = events.filter((ev) => ev.summary.indexOf(genre) >= 0).length;
-            return { name: genre, value };
+
+        const data = genres.map((genre, index) => {
+            const value = events.filter(({ summary }) => summary.split(" ").includes(genre)).length;
+            return { name: genre, value, fill: colors[index] };
         });
         return data;
     };
 
-    useEffect(() => { setData(() => getData()); }, [events]);
 
-    const colors = ['#2364aa', '#3da5d9', '#73bfb8', '#fec601', '#ea7317'];
 
     return (
-        <ResponsiveContainer height={400}>
+        <ResponsiveContainer height={300}>
           <PieChart width={400} height={400}>
             <Tooltip />
-            <Legend verticalAlign="bottom" />
+            <Legend verticalAlign="bottom" layout="horizontal"  formatter={(value, entry, index) => <span style={{ color: entry.color }}>{entry.payload.name}</span>} />
             <Pie
-              data={data}
-              cx={200}
-              cy={200}
-              labelLine={false}
-              label={true}
-              outerRadius={80}
-              fill="#8884d8"
-              dataKey="value"
+                data={data}
+                dataKey="value"
+                nameKey="name"
+                labelLine={false}
+                outerRadius={80}
+                label={({ percent }) => `${(percent * 100).toFixed(0)} %`}
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                <Cell key={`cell-${index}`} fill={entry.fill} />
               ))}
             </Pie>
           </PieChart>
