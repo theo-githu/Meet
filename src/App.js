@@ -4,10 +4,11 @@ import EventList from './EventList';
 import CitySearch from './CitySearch';
 import EventGenre from './EventGenre';
 import NumberOfEvents from './NumberOfEvents';
-import { extractLocations, getEvents } from './api';
 import './nprogress.css';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { WarningAlert } from './Alert';
+import WelcomeScreen from './WelcomeScreen';
+import { getEvents, extractLocations, checkToken, getAccessToken } from './api';
 
 class App extends Component {
 
@@ -16,41 +17,11 @@ class App extends Component {
     locations: [],
     selectedLocation: 'all',
     numberOfEvents: 32,
-    warningText: ''
-  }
-
-  async componentDidMount() {
-    this.mounted = true;
-    
-    if (window.location.href.startsWith("http://localhost")) {
-      getEvents().then((events) => {
-        if (this.mounted) {
-          this.setState({ events, locations: extractLocations(events)});
-        }
-      });
-    }
-
-  getEvents().then((events) => {
-    if (this.mounted) {
-      this.setState({ events, locations: extractLocations(events) });
-    }
-  });
-}
-
-  componentWillUnmount(){
-    this.mounted = false;
-  }
-
-  prompOfflineWarning = () => {
-    if (!navigator.onLine) {
-      this.setState({ 
-        warningText: 'You are offline. Events may not be uptodate.'
-      })
-    }
+    showWelcomeScreen: undefined
   }
 
   // data from API recharts
-  
+
   getData = () => {
     const {locations, events} = this.state;
     const data = locations.map((location)=>{
@@ -61,11 +32,24 @@ class App extends Component {
     return data;
   };
 
-  updateNumberOfEvents(number) {
-    this.setState({
-      numberOfEvents: number,
-    });
-    this.updateEvents(this.state.selectedLocation);
+  async componentDidMount() {
+    this.mounted = true;
+    const accessToken = localStorage.getItem('access_token');
+    const isTokenValid = (await checkToken(accessToken)).error ? false : true;
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = searchParams.get("code");
+    this.setState({ showWelcomeScreen: !(code || isTokenValid) });
+    if ((code || isTokenValid) && this.mounted) {
+      getEvents().then((events) => {
+        if (this.mounted) {
+          this.setState({ events, locations: extractLocations(events) });
+        }
+      });
+    }
+  }
+
+  componentWillUnmount(){
+    this.mounted = false;
   }
 
   updateEvents = (location, inputNumber) => {
@@ -96,12 +80,21 @@ class App extends Component {
     }
   }
 
+  updateNumberOfEvents(number) {
+    this.setState({
+      numberOfEvents: number,
+    });
+    this.updateEvents(this.state.selectedLocation);
+  }
+
+
   render() {
+    if (this.state.showWelcomeScreen === undefined) return <div className='App' />
     const { locations, numberOfEvents, events } = this.state;
+
     return (
       <div className="App">
         <h1>Meet App</h1>
-          <WarningAlert text={this.state.warningText} />
         <h4>Choose your nearest city</h4>
         <CitySearch updateEvents={this.updateEvents} locations={locations} />
         <NumberOfEvents 
@@ -123,7 +116,10 @@ class App extends Component {
             </ScatterChart>
           </ResponsiveContainer>
         </div>
+
         <EventList events={this.state.events} />
+        <WelcomeScreen showWelcomeScreen={this.state.showWelcomeScreen} getAccessToken={() => { getAccessToken() }} />
+        {!navigator.onLine ? <WarningAlert text={"Offline mode: List loaded from cache."} /> : null}
       </div>
     );
   }
